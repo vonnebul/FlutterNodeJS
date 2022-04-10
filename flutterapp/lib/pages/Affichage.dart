@@ -1,7 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutterapp/user.dart';
+import 'package:flutterapp/livre.dart';
 
 class Affichage extends StatefulWidget {
   const Affichage({ Key? key }) : super(key: key);
@@ -12,28 +13,22 @@ class Affichage extends StatefulWidget {
 
 class _AffichageState extends State<Affichage> {
   
-  User users = User();
-  Future<List>? _bookList;
+  late Future<List> _bookList;
   @override 
   void initState() {
     // TODO: implement initState
     super.initState();
-    _bookList = User.getAllUser();
-   
+    _bookList = Livre.getAllLivre();
   }
-  
-
   @override
   Widget build(BuildContext context) {
     if(ModalRoute.of(context)!.settings.arguments != null){
       Object? arg = ModalRoute.of(context)!.settings.arguments;
-      var randomvar= jsonDecode(arg.toString());
-      print(randomvar["title"]);
-       setState(()  {
-       _bookList = List.from(_bookList)..add(randomvar);
+      var newLivre= jsonDecode(arg.toString());
+       setState(() {
+         _bookList = _bookList.then<List>((value) {return [newLivre, ...value];});
       });
     }
-    print(_bookList);
      return Scaffold(
       appBar: AppBar(
         title: const Text("liste livres"),

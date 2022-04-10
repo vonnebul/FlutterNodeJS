@@ -2,9 +2,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
-class User{
+class Livre{
   static String baseUrl = "https://jsonplaceholder.typicode.com";
-  static Future<List> getAllUser() async{
+  static Future<List> getAllLivre() async{
     try{
       var res = await http.get(Uri.parse(baseUrl+'/posts'));
       if(res.statusCode == 200){
