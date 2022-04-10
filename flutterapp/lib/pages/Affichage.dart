@@ -26,12 +26,12 @@ class _AffichageState extends State<Affichage> {
                 itemBuilder: (context, i){
                   return Card(
                     child: ListTile(
-                      title: Text(snapshot.data![i]['username'], style: const TextStyle(fontSize: 30),),
+                      title: Text(snapshot.data![i]['first_name'], style: const TextStyle(fontSize: 30),),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
+                          Text(snapshot.data![i]['last_name'], style: const TextStyle(fontSize: 20)),
                           Text(snapshot.data![i]['email'], style: const TextStyle(fontSize: 20)),
-                          Text(snapshot.data![i]['password'], style: const TextStyle(fontSize: 20)),
                       ]),
                     ),
                   );
@@ -45,7 +45,13 @@ class _AffichageState extends State<Affichage> {
             }
           },
         ),
-        ),  
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, '/ajout');
+          },
+          child: const Text("+"),
+      ),  
     );
   }
 }

@@ -6,9 +6,10 @@ class User{
   static String baseUrl = "http://10.0.2.2:8000/api";
   Future<List> getAllUser() async{
     try{
-      var res = await http.get(Uri.parse(baseUrl+'/user'));
+      var res = await http.get(Uri.parse("https://reqres.in/api/users"));
       if(res.statusCode == 200){
-        return jsonDecode(res.body);
+        print(jsonDecode(res.body)['data']);
+        return jsonDecode(res.body)['data'];
       }
       else{
         return Future.error("erreur serveur");
@@ -19,9 +20,13 @@ class User{
     }
   }
 
-  static Login(BuildContext context) async{
+  static Login(BuildContext context, login, password) async{
      try{
-      var res = await http.get(Uri.parse(baseUrl+'/login'));
+      var connection = {"email": login, "password": password};
+      var res = await http.post(
+        Uri.parse("https://reqres.in/api/login"),
+        body: connection
+        );
       if(res.statusCode == 200){
         Navigator.pushNamed(context, '/liste');
       }
@@ -33,4 +38,23 @@ class User{
       return Future.error(err);
     }
    }
+  static Ajout(BuildContext context, username, password, email) async{
+    
+    try{
+      var data= {"name":username,"job":email };
+      var res = await http.post(
+        Uri.parse("https://reqres.in/api/users"), 
+        body: data
+        );
+      if(res.statusCode == 200){
+        Navigator.pushNamed(context, '/liste');
+      }
+      else{
+        Navigator.pushNamed(context, '/');
+      }
+    }
+    catch(err){
+      return Future.error(err);
+    }
+  }
 }

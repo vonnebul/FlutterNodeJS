@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutterapp/pages/Affichage.dart';
+import 'package:flutterapp/pages/Ajout.dart';
 import 'package:flutterapp/pages/LoginPage.dart';
 import 'package:flutterapp/user.dart';
 
@@ -19,7 +20,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         '/' : (context) => LoginPage(),
-        '/liste': (context) => Affichage()
+        '/liste': (context) => Affichage(),
+        '/ajout': (context) => Ajout()
       },
     );
   }

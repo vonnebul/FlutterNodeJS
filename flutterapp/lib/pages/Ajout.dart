@@ -3,28 +3,31 @@ import 'package:flutterapp/user.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({ Key? key }) : super(key: key);
+class Ajout extends StatefulWidget {
+  const Ajout({ Key? key }) : super(key: key);
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<Ajout> createState() => _AjoutState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _AjoutState extends State<Ajout> {
   bool isAPIcallProcess = false;
-  bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  String? username;
   String? email;
   String? password;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor : Colors.blue,
+        appBar: AppBar(
+        title: const Text("ajout utilisateur"),
+        ),
+        backgroundColor : Colors.white,
         body: ProgressHUD(
           child: Form(
             key: globalFormKey,
-            child: _loginUI(context),
+            child: _AjoutUI(context),
             ),
             inAsyncCall: isAPIcallProcess,
             opacity: 0.3,
@@ -33,8 +36,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  Widget _loginUI(BuildContext context){
+  Widget _AjoutUI(BuildContext context){
     return SingleChildScrollView(
       child:  Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -43,56 +45,66 @@ class _LoginPageState extends State<LoginPage> {
           const Padding(
             padding: EdgeInsets.only(
               left: 20,
-              top: 90,
+              top: 70,
               bottom: 30
             ),
-            child: Text("Connexion :", style: TextStyle(
+            child: Text("Username :", style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
-              color: Colors.white 
+              color: Colors.blue 
               ),
             ),
           ),
           FormHelper.inputFieldWidget(
             context, 
-            "Email", 
-            "Email", 
+            "Username", 
+            "Username", 
             (onValidateVal){
               if(onValidateVal.isEmpty){
-                return "L'email ne peut être vide";
+                return "Le pseudo ne peut être vide";
               }
               return null;
             }, 
             (onSaved){
-              email = onSaved;
+              username = onSaved;
             },
-            borderFocusColor: Colors.white,
-            borderColor: Colors.white,
-            textColor: Colors.white,
-            hintColor: Colors.white.withOpacity(0.8),
+            borderFocusColor: Colors.blue,
+            borderColor: Colors.blue,
+            textColor: Colors.blue,
+            hintColor: Colors.blue.withOpacity(0.8),
             borderRadius: 10
+            ),
+            const Padding(
+              padding:  EdgeInsets.only(top:20,left: 20,),
+              child:  Text("Email :", style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 25,
+              color: Colors.blue 
+              ),
+            ),
             ),
             Padding(
               padding: const EdgeInsets.only(top:10),
               child:  FormHelper.inputFieldWidget(
                 context, 
-                "Mot_de_passe", 
-                "mot de passe", 
+                "E-mail", 
+                "E-mail", 
                 (onValidateVal){
                   if(onValidateVal.isEmpty){
-                    return "Le mot de passe ne peut être vide";
+                    return "L'email ne peut être vide";
                   }
                   return null;
                 }, 
                 (onSaved){
-                  password = onSaved;
+                  email = onSaved;
                 },
-                borderFocusColor: Colors.white,
-                borderColor: Colors.white,
-                textColor: Colors.white,
-                hintColor: Colors.white.withOpacity(0.8),
+                borderFocusColor: Colors.blue,
+                borderColor: Colors.blue,
+                textColor: Colors.blue,
+                hintColor: Colors.blue.withOpacity(0.8),
                 borderRadius: 10,
                 ),
+                
                 
             ),
             const SizedBox(
@@ -100,12 +112,12 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Center(
               child: FormHelper.submitButton(
-                "login", 
+                "Validez", 
                 (){
                   dynamic validate = globalFormKey.currentState?.validate();
                   if(validate != null && validate){
                     globalFormKey.currentState?.save();
-                    User.Login(context, email, password);
+                    User.Ajout(context, username, password, email);
                   }             
                 },
                 btnColor: Colors.blue,
