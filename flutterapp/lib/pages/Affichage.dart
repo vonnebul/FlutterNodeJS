@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutterapp/user.dart';
 
@@ -9,16 +11,36 @@ class Affichage extends StatefulWidget {
 }
 
 class _AffichageState extends State<Affichage> {
+  
   User users = User();
+  Future<List>? _bookList;
+  @override 
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _bookList = User.getAllUser();
+   
+  }
+  
+
   @override
   Widget build(BuildContext context) {
+    if(ModalRoute.of(context)!.settings.arguments != null){
+      Object? arg = ModalRoute.of(context)!.settings.arguments;
+      var randomvar= jsonDecode(arg.toString());
+      print(randomvar["title"]);
+       setState(()  {
+       _bookList = List.from(_bookList)..add(randomvar);
+      });
+    }
+    print(_bookList);
      return Scaffold(
       appBar: AppBar(
-        title: const Text("liste utilisateurs"),
+        title: const Text("liste livres"),
       ),
       body: Container(
         child: FutureBuilder<List>(
-          future: users.getAllUser(),
+          future: _bookList,
           builder: (context, snapshot){
             if(snapshot.hasData){
               return ListView.builder(
@@ -26,12 +48,11 @@ class _AffichageState extends State<Affichage> {
                 itemBuilder: (context, i){
                   return Card(
                     child: ListTile(
-                      title: Text(snapshot.data![i]['first_name'], style: const TextStyle(fontSize: 30),),
+                      title: Text(snapshot.data![i]['title'], style: const TextStyle(fontSize: 30),),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          Text(snapshot.data![i]['last_name'], style: const TextStyle(fontSize: 20)),
-                          Text(snapshot.data![i]['email'], style: const TextStyle(fontSize: 20)),
+                          Text(snapshot.data![i]['body'], style: const TextStyle(fontSize: 20)),
                       ]),
                     ),
                   );

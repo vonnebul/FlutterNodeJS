@@ -3,13 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class User{
-  static String baseUrl = "http://10.0.2.2:8000/api";
-  Future<List> getAllUser() async{
+  static String baseUrl = "https://jsonplaceholder.typicode.com";
+  static Future<List> getAllUser() async{
     try{
-      var res = await http.get(Uri.parse("https://reqres.in/api/users"));
+      var res = await http.get(Uri.parse(baseUrl+'/posts'));
       if(res.statusCode == 200){
-        print(jsonDecode(res.body)['data']);
-        return jsonDecode(res.body)['data'];
+        return jsonDecode(res.body);
       }
       else{
         return Future.error("erreur serveur");
@@ -38,16 +37,18 @@ class User{
       return Future.error(err);
     }
    }
-  static Ajout(BuildContext context, username, password, email) async{
-    
+  static ajout(BuildContext context, title, body) async{
     try{
-      var data= {"name":username,"job":email };
+     
+      Map<String,dynamic> data= {"title":title,"body":body};
       var res = await http.post(
-        Uri.parse("https://reqres.in/api/users"), 
+        Uri.parse(baseUrl+'/posts'), 
         body: data
         );
-      if(res.statusCode == 200){
-        Navigator.pushNamed(context, '/liste');
+      if(res.statusCode == 201){
+        Navigator.pushNamed(context, '/liste', arguments: res.body
+
+        );
       }
       else{
         Navigator.pushNamed(context, '/');

@@ -13,15 +13,14 @@ class Ajout extends StatefulWidget {
 class _AjoutState extends State<Ajout> {
   bool isAPIcallProcess = false;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  String? username;
-  String? email;
-  String? password;
+  String? title;
+  String? body;
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-        title: const Text("ajout utilisateur"),
+        title: const Text("Nouveau livre"),
         ),
         backgroundColor : Colors.white,
         body: ProgressHUD(
@@ -48,7 +47,7 @@ class _AjoutState extends State<Ajout> {
               top: 70,
               bottom: 30
             ),
-            child: Text("Username :", style: TextStyle(
+            child: Text("Titre :", style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
               color: Colors.blue 
@@ -57,16 +56,16 @@ class _AjoutState extends State<Ajout> {
           ),
           FormHelper.inputFieldWidget(
             context, 
-            "Username", 
-            "Username", 
+            "Title", 
+            "Title", 
             (onValidateVal){
               if(onValidateVal.isEmpty){
-                return "Le pseudo ne peut être vide";
+                return "Le titre ne peut être vide";
               }
               return null;
             }, 
             (onSaved){
-              username = onSaved;
+              title = onSaved;
             },
             borderFocusColor: Colors.blue,
             borderColor: Colors.blue,
@@ -76,7 +75,7 @@ class _AjoutState extends State<Ajout> {
             ),
             const Padding(
               padding:  EdgeInsets.only(top:20,left: 20,),
-              child:  Text("Email :", style: TextStyle(
+              child:  Text("résumé :", style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 25,
               color: Colors.blue 
@@ -87,16 +86,16 @@ class _AjoutState extends State<Ajout> {
               padding: const EdgeInsets.only(top:10),
               child:  FormHelper.inputFieldWidget(
                 context, 
-                "E-mail", 
-                "E-mail", 
+                "body", 
+                "résumé", 
                 (onValidateVal){
                   if(onValidateVal.isEmpty){
-                    return "L'email ne peut être vide";
+                    return "Le résumé ne peut être vide";
                   }
                   return null;
                 }, 
                 (onSaved){
-                  email = onSaved;
+                  body = onSaved;
                 },
                 borderFocusColor: Colors.blue,
                 borderColor: Colors.blue,
@@ -117,7 +116,7 @@ class _AjoutState extends State<Ajout> {
                   dynamic validate = globalFormKey.currentState?.validate();
                   if(validate != null && validate){
                     globalFormKey.currentState?.save();
-                    User.Ajout(context, username, password, email);
+                    User.ajout(context, title, body);
                   }             
                 },
                 btnColor: Colors.blue,
